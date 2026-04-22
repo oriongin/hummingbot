@@ -20,27 +20,29 @@ if is_posix:
 if os.environ.get("WITHOUT_CYTHON_OPTIMIZATIONS"):
     os.environ["CFLAGS"] += " -O0"
 
-
-# Avoid a gcc warning below:
-# cc1plus: warning: command line option ???-Wstrict-prototypes??? is valid
-# for C/ObjC but not for C++
 class BuildExt(build_ext):
     def build_extensions(self):
         if os.name != "nt" and "-Wstrict-prototypes" in self.compiler.compiler_so:
             self.compiler.compiler_so.remove("-Wstrict-prototypes")
         super().build_extensions()
 
-
 def main():
     cpu_count = os.cpu_count() or 8
     version = "20230930"
+    
     all_packages = find_packages(include=["hummingbot", "hummingbot.*"], )
-    excluded_paths = ["hummingbot.connector.exchange.injective_v2",
-                      "hummingbot.connector.derivative.injective_v2_perpetual",
-                      "hummingbot.connector.gateway.clob_spot.data_sources.injective",
-                      "hummingbot.connector.gateway.clob_perp.data_sources.injective_perpetual"
-                      ]
+
+    excluded_paths = [
+        "hummingbot.connector.exchange.injective_v2",
+        "hummingbot.connector.derivative.injective_v2_perpetual",
+        "hummingbot.connector.gateway.clob_spot.data_sources.injective",
+        "hummingbot.connector.gateway.clob_perp.data_sources.injective_perpetual",
+        "hummingbot.connector.exchange.polkadex*",
+        "hummingbot.connector.exchange.ndax*",
+    ]
+    
     packages = [pkg for pkg in all_packages if not any(fnmatch.fnmatch(pkg, pattern) for pattern in excluded_paths)]
+    
     package_data = {
         "hummingbot": [
             "core/cpp/*",
@@ -48,6 +50,7 @@ def main():
             "templates/*TEMPLATE.yml"
         ],
     }
+
     install_requires = [
         "bidict",
         "aioconsole",
@@ -58,7 +61,6 @@ def main():
         "appnope",
         "async-timeout",
         "base58",
-        "gql",
         "cachetools",
         "certifi",
         "coincurve",
@@ -91,7 +93,6 @@ def main():
         "pre-commit",
         "prompt-toolkit",
         "protobuf",
-        "gql",
         "grpcio",
         "grpcio-tools",
         "psutil",
@@ -99,7 +100,7 @@ def main():
         "pyjwt",
         "pyperclip",
         "python-dateutil",
-        "python-telegram-bot",
+        "python-telegram-bot==12.8",
         "pyOpenSSL",
         "requests",
         "rsa",
@@ -115,8 +116,7 @@ def main():
         "web3",
         "websockets",
         "yarl",
-        "python-telegram-bot==12.8",
-        "pandas_ta==0.3.14b",
+        "pandas_ta @ git+https://github.com/oriongin/pandas-ta.git",
     ]
 
     cython_kwargs = {
@@ -129,6 +129,7 @@ def main():
     compiler_directives = {
         "annotation_typing": False,
     }
+    
     if os.environ.get("WITHOUT_CYTHON_OPTIMIZATIONS"):
         compiler_directives.update({
             "optimize.use_switch": False,
@@ -140,9 +141,7 @@ def main():
 
     if "DEV_MODE" in os.environ:
         version += ".dev1"
-        package_data[""] = [
-            "*.pxd", "*.pyx", "*.h"
-        ]
+        package_data[""] = ["*.pxd", "*.pyx", "*.h"]
         package_data["hummingbot"].append("core/cpp/*.cpp")
 
     if len(sys.argv) > 1 and sys.argv[1] == "build_ext" and is_posix:
@@ -159,15 +158,10 @@ def main():
           package_data=package_data,
           install_requires=install_requires,
           ext_modules=cythonize(cython_sources, compiler_directives=compiler_directives, **cython_kwargs),
-          include_dirs=[
-              np.get_include()
-          ],
-          scripts=[
-              "bin/hummingbot_quickstart.py"
-          ],
+          include_dirs=[np.get_include()],
+          scripts=["bin/hummingbot_quickstart.py"],
           cmdclass={"build_ext": BuildExt},
           )
-
 
 if __name__ == "__main__":
     main()
