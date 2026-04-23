@@ -36,10 +36,6 @@ order_books_db_2 = {
 mock_api_enabled = os.getenv("MOCK_API_ENABLED")
 
 """
-# AscendEX Tests
-ascend_ex_api_key = os.getenv("ASCEND_EX_KEY")
-ascend_ex_secret_key = os.getenv("ASCEND_EX_SECRET")
-
 # Binance Tests
 binance_api_key = os.getenv("BINANCE_API_KEY")
 binance_api_secret = os.getenv("BINANCE_API_SECRET")
@@ -64,14 +60,6 @@ loopring_exchangeid = os.getenv("LOOPRING_EXCHANGEID")
 loopring_api_key = os.getenv("LOOPRING_API_KEY")
 loopring_private_key = os.getenv("LOOPRING_PRIVATE_KEY")
 
-# Bittrex Tests
-bittrex_api_key = os.getenv("BITTREX_API_KEY")
-bittrex_secret_key = os.getenv("BITTREX_SECRET_KEY")
-
-# KuCoin Tests
-kucoin_api_key = os.getenv("KUCOIN_API_KEY")
-kucoin_secret_key = os.getenv("KUCOIN_SECRET_KEY")
-kucoin_passphrase = os.getenv("KUCOIN_PASSPHRASE")
 
 test_web3_provider_list = [os.getenv("WEB3_PROVIDER")]
 
@@ -89,21 +77,12 @@ bitmart_api_key = os.getenv("BITMART_API_KEY")
 bitmart_secret_key = os.getenv("BITMART_SECRET_KEY")
 bitmart_memo = os.getenv("BITMART_MEMO")
 
-# BTC Markets Test
-btc_markets_api_key = os.getenv("BTC_MARKETS_API_KEY")
-btc_markets_secret_key = os.getenv("BTC_MARKETS_SECRET_KEY")
 
-# HitBTC Tests
-hitbtc_api_key = os.getenv("HITBTC_API_KEY")
-hitbtc_secret_key = os.getenv("HITBTC_SECRET_KEY")
 
 # Gate.io Tests
 gate_io_api_key = os.getenv("GATE_IO_API_KEY")
 gate_io_secret_key = os.getenv("GATE_IO_SECRET_KEY")
 
-# AltMarkets.io Test
-altmarkets_api_key = os.getenv("ALTMARKETS_API_KEY")
-altmarkets_secret_key = os.getenv("ALTMARKETS_SECRET_KEY")
 
 # Wallet Tests
 test_erc20_token_address = os.getenv("TEST_ERC20_TOKEN_ADDRESS")
