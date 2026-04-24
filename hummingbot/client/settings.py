@@ -55,10 +55,7 @@ GATEAWAY_CLIENT_KEY_PATH = DEFAULT_GATEWAY_CERTS_PATH / "client_key.pem"
 
 PAPER_TRADE_EXCHANGES = [  # todo: fix after global config map refactor
     "binance_paper_trade",
-    "kucoin_paper_trade",
-    "ascend_ex_paper_trade",
     "gate_io_paper_trade",
-    "mock_paper_exchange",
 ]
 
 CONNECTOR_SUBMODULES_THAT_ARE_NOT_CEX_TYPES = ["test_support", "utilities", "gateway"]

@@ -26,10 +26,8 @@ from hummingbot.connector.connector_metrics_collector import (
     MetricsCollector,
     TradeVolumeMetricCollector,
 )
-from hummingbot.connector.exchange.ascend_ex.ascend_ex_utils import AscendExConfigMap
 from hummingbot.connector.exchange.binance.binance_utils import BinanceConfigMap
 from hummingbot.connector.exchange.gate_io.gate_io_utils import GateIOConfigMap
-from hummingbot.connector.exchange.kucoin.kucoin_utils import KuCoinConfigMap
 from hummingbot.connector.exchange_base import ExchangeBase
 from hummingbot.core.rate_oracle.rate_oracle import RATE_ORACLE_SOURCES, RateOracle
 from hummingbot.core.rate_oracle.sources.rate_source_base import RateSourceBase
@@ -303,8 +301,6 @@ class PaperTradeConfigMap(BaseClientModel):
     paper_trade_exchanges: List = Field(
         default=[
             BinanceConfigMap.Config.title,
-            KuCoinConfigMap.Config.title,
-            AscendExConfigMap.Config.title,
             GateIOConfigMap.Config.title,
         ],
     )
@@ -744,15 +740,6 @@ class ExchangeRateSourceModeBase(RateSourceModeBase):
         return RATE_ORACLE_SOURCES[self.Config.title]()
 
 
-class AscendExRateSourceMode(ExchangeRateSourceModeBase):
-    name: str = Field(
-        default="ascend_ex",
-        const=True,
-        client_data=None,
-    )
-
-    class Config:
-        title = "ascend_ex"
 
 
 class BinanceRateSourceMode(ExchangeRateSourceModeBase):
@@ -886,15 +873,6 @@ class CoinCapRateSourceMode(RateSourceModeBase):
         return rate_source
 
 
-class KuCoinRateSourceMode(ExchangeRateSourceModeBase):
-    name: str = Field(
-        default="kucoin",
-        const=True,
-        client_data=None,
-    )
-
-    class Config:
-        title = "kucoin"
 
 
 class GateIoRateSourceMode(ExchangeRateSourceModeBase):
@@ -909,11 +887,9 @@ class GateIoRateSourceMode(ExchangeRateSourceModeBase):
 
 
 RATE_SOURCE_MODES = {
-    AscendExRateSourceMode.Config.title: AscendExRateSourceMode,
     BinanceRateSourceMode.Config.title: BinanceRateSourceMode,
     CoinGeckoRateSourceMode.Config.title: CoinGeckoRateSourceMode,
     CoinCapRateSourceMode.Config.title: CoinCapRateSourceMode,
-    KuCoinRateSourceMode.Config.title: KuCoinRateSourceMode,
     GateIoRateSourceMode.Config.title: GateIoRateSourceMode,
 }
 
