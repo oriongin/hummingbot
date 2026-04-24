@@ -38,6 +38,7 @@ def main():
         "hummingbot.connector.gateway.clob_spot.data_sources.injective*",
         "hummingbot.connector.gateway.clob_perp.data_sources.injective*",
         "hummingbot.connector.exchange.polkadex*",
+        "hummingbot.connector.test_support*"
     ]
     
     packages = [pkg for pkg in all_packages if not any(fnmatch.fnmatch(pkg, pattern) for pattern in excluded_paths)]
@@ -122,6 +123,13 @@ def main():
 
     cython_sources = ["hummingbot/**/*.pyx"]
 
+    cython_excludes = [
+        "hummingbot/connector/test_support/**/*.pyx",
+        "hummingbot/connector/exchange/injective/**/*.pyx",
+        "hummingbot/connector/derivative/injective_perpetual/**/*.pyx",
+        "hummingbot/connector/exchange/polkadex/**/*.pyx"
+    ]
+
     compiler_directives = {
         "annotation_typing": False,
     }
@@ -153,7 +161,12 @@ def main():
           packages=packages,
           package_data=package_data,
           install_requires=install_requires,
-          ext_modules=cythonize(cython_sources, compiler_directives=compiler_directives, **cython_kwargs),
+          ext_modules=cythonize(
+              cython_sources, 
+              exclude=cython_excludes, 
+              compiler_directives=compiler_directives, 
+              **cython_kwargs
+          ),
           include_dirs=[np.get_include()],
           scripts=["bin/hummingbot_quickstart.py"],
           cmdclass={"build_ext": BuildExt},
