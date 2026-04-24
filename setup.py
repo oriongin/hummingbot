@@ -64,7 +64,7 @@ def main():
         "certifi",
         "coincurve",
         "cryptography",
-        "cython==3.0.0",
+        "cython==0.29.36",
         "cytoolz",
         "commlib-py",
         "docker",
